@@ -19,3 +19,7 @@ php --ini
 
 - Remova o ;  e salve o arquivo
 ![alt text](image-3.png)
+
+#### Descomentar essa linha 
+
+;extension_dir=ext
