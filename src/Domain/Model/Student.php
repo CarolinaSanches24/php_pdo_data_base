@@ -30,10 +30,10 @@ class Student
         return $this->birthDate;
     }
 
-    public function age(): int
+    public function age(): int //função retorna um tipo inteiro
     {
         return $this->birthDate
-            ->diff(new \DateTimeImmutable())
-            ->y;
+            ->diff(new \DateTimeImmutable()) //diferença entre a data de nasc e a data e hora atuais.
+            ->y; //representa a diferença em anos.
     }
 }
