@@ -50,3 +50,9 @@ Como você pode ver, require aceita um objeto que mapeia os nomes dos pacotes (p
 ```shell
 php composer.phar update
 ```
+
+
+#### 
+```shell
+composer dump-autoload
+```
