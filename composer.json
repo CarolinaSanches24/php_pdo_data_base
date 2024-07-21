@@ -1,0 +1,17 @@
+{
+    "name": "carolinasanches24/php_pdo",
+    "description": "curso de php data objects",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Carolinasanches24\\PhpPdo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Carol Sanches",
+            "email": "carolmosilva34@gmail.com"
+        }
+    ],
+    "require": {}
+}
