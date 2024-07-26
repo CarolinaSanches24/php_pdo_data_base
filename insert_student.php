@@ -1,16 +1,17 @@
 <?php
 
+use Carolinasanches24\PhpPdo\Domain\Model\DatabaseConnection;
 use Carolinasanches24\PhpPdo\Domain\Model\Student;
 
 require_once 'vendor/autoload.php';
 
-$path = __DIR__ . '/db.sqlite'; //caminho absoluto
-$pdo = new PDO('sqlite:'.$path);
+$pdo = DatabaseConnection::getConnection();
+DatabaseConnection::createTables();
 
 $student = new Student(
     id: null,
-    name: 'Carolina Sanches',
-    birthDate: new \DateTimeImmutable('1997-10-15')
+    name: 'Teste',
+    birthDate: new \DateTimeImmutable('1997-10-20')
 );
 
 $sqlInsert = "INSERT INTO students (name, birth_date) VAlUES('{$student->name()}','{$student->birthDate()->format('Y-m-d')}')";
