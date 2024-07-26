@@ -9,11 +9,11 @@ $pdo = DatabaseConnection::getConnection();
 DatabaseConnection::createTables();
 
 $student = new Student(
-    id: null,
+    id: 4,
     name: 'Teste',
     birthDate: new \DateTimeImmutable('1997-10-20')
 );
 
-$sqlInsert = "INSERT INTO students (name, birth_date) VAlUES('{$student->name()}','{$student->birthDate()->format('Y-m-d')}')";
+$sqlInsert = "INSERT INTO students (id, name, birth_date) VAlUES({$student->id()},'{$student->name()}','{$student->birthDate()->format('Y-m-d')}')";
 // echo "".$sqlInsert."";
 var_dump($pdo ->exec($sqlInsert)); //exec -> Executar sql

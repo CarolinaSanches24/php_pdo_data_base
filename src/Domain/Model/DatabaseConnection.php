@@ -18,7 +18,8 @@ class DatabaseConnection
     {
         if (self::$connection === null) {
             try {
-                $path = __DIR__ . '../../../db.sqlite'; // caminho absoluto
+                $path = realpath('./').'\db.sqlite';
+            
                 self::$connection = new PDO('sqlite:' . $path);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
