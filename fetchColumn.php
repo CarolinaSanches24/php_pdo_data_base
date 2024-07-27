@@ -8,13 +8,5 @@ $pdo = DatabaseConnection::getConnection();
 
 $statement = $pdo->query('SELECT * FROM students WHERE id= 4;');
 
-while ($studentData = $statement->fetch( PDO::FETCH_ASSOC)) {
-    $student = new Student(
-        $studentData['id'],
-        $studentData['name'],
-        new \DateTimeImmutable($studentData['birth_date'])
-    );
-
-    echo $student->age() . PHP_EOL;
-}
+var_dump( $statement->fetchColumn(2)); //Traz todos os registros da 2ª coluna
 exit();

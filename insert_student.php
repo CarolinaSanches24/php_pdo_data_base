@@ -9,9 +9,9 @@ $pdo = DatabaseConnection::getConnection();
 DatabaseConnection::createTables();
 
 $student = new Student(
-    id: 4,
-    name: 'Teste',
-    birthDate: new \DateTimeImmutable('1997-10-20')
+    id: 5,
+    name: 'Joana Gomes',
+    birthDate: new \DateTimeImmutable('1998-10-20')
 );
 
 $sqlInsert = "INSERT INTO students (id, name, birth_date) VAlUES({$student->id()},'{$student->name()}','{$student->birthDate()->format('Y-m-d')}')";
