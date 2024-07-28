@@ -17,7 +17,6 @@
       </section>
 
       <button class="btn" type="submit" name="register">Cadastrar</button>
-
       <label for="id">ID do Estudante:</label>
       <input type="number" id="id" name="id" />
       <button class ="btn" type="submit" name="search">Buscar</button>

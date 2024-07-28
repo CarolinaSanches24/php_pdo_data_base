@@ -1,3 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buscar Estudante</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./searchStudent.css" />
+  </head>
+  <body>
+    
+    <!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Mensagem</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalMessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+function showModal(message) {
+    $('#modalMessage').text(message);
+    $('#successModal').modal('show');
+}
+</script>
+  </body>
+  </html>
+
 <?php
 
 use Carolinasanches24\PhpPdo\Domain\Model\DatabaseConnection;
@@ -9,70 +51,48 @@ $pdo = DatabaseConnection::getConnection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST['search'])) {
-        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        if ($id === false) {
-            echo "ID inválido";
-            exit();
-        }
-
-        $sql = 'SELECT * FROM students WHERE id = :id';
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            echo "ID: " . $result['id'] . PHP_EOL;
-            echo "Name: " . $result['name'] . PHP_EOL;
-            echo "Birth Date: " . $result['birth_date'] . PHP_EOL;
-        } else {
-            echo 'Nenhum aluno encontrado';
-        }
-        
-    } elseif (isset($_POST['register'])) {
+    if (isset($_POST['register'])) {
 
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
         $birth_date = filter_input(INPUT_POST, 'birth_date', FILTER_SANITIZE_SPECIAL_CHARS);
 
         if ($id === false || !$name || !$birth_date) {
-            echo "Dados inválidos";
+            echo "<script>showModal('Dados inválidos');</script>";
             exit();
         }
 
-    $student = new Student(
-        $id,
-        $name,
-        new \DateTimeImmutable($birth_date)
-    );
+        $student = new Student(
+            $id,
+            $name,
+            new \DateTimeImmutable($birth_date)
+        );
 
-    $sqlInsert = 'INSERT INTO students (id, name, birth_date) VALUES (?, ?, ?)';
+        $sqlInsert = 'INSERT INTO students (id, name, birth_date) VALUES (?, ?, ?)';
 
-    $stmt = $pdo->prepare($sqlInsert);
-    $stmt->bindValue(1, $student->id());
-    $stmt->bindValue(2, $student->name());
-    $stmt->bindValue(3, $student->birthDate()->format('Y-m-d'));
+        $stmt = $pdo->prepare($sqlInsert);
+        $stmt->bindValue(1, $student->id());
+        $stmt->bindValue(2, $student->name());
+        $stmt->bindValue(3, $student->birthDate()->format('Y-m-d'));
 
-    if ($stmt->execute()) {
-        echo "Estudante cadastrado com sucesso!";
-    } else {
-        echo "Erro ao cadastrar estudante";
+        if ($stmt->execute()) {
+            echo "<script>showModal('Estudante cadastrado com sucesso!');</script>";
+        } else {
+            echo "<script>showModal('Erro ao cadastrar estudante');</script>";
+        }
     }
-}
 } else {
-echo 'Método de requisição inválido';
+    echo 'Método de requisição inválido';
 }
 
-// Exibe todos os registros na tabela
 $sql = 'SELECT * FROM students';
 $stmt = $pdo->query($sql);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo '<h2>Lista de Estudantes</h2>';
-echo '<table border="1">';
-echo '<tr><th>ID</th><th>Nome</th><th>Data de Nascimento</th></tr>';
+echo '<table class="table">';
+echo '<thead><tr><th>ID</th><th>Nome</th><th>Data de Nascimento</th></tr></thead>';
+echo '<tbody>';
 
 foreach ($students as $student) {
     echo "<tr>";
@@ -82,4 +102,5 @@ foreach ($students as $student) {
     echo "</tr>";
 }
 
-echo '</table>';
+echo '</tbody></table>';
+?>
