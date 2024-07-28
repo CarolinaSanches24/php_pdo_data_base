@@ -4,3 +4,9 @@
  var_dump($pdo ->exec($sqlInsert)); //exec -> Executar sql
  ```
  ![alt text](image-5.png)
+
+ ### Run server
+
+ ```bash
+ php -S localhost:8000
+ ```

@@ -8,7 +8,7 @@ require_once 'vendor/autoload.php';
 $pdo = DatabaseConnection::getConnection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verifica qual botão foi clicado
+    
     if (isset($_POST['search'])) {
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
@@ -20,10 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $sql = 'SELECT * FROM students WHERE id = :id';
 
-        // Preparação da Consulta SQL:
+        
         $stmt = $pdo->prepare($sql);
-
-        // Vinculação de Parâmetro
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -69,3 +67,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
 echo 'Método de requisição inválido';
 }
+
+// Exibe todos os registros na tabela
+$sql = 'SELECT * FROM students';
+$stmt = $pdo->query($sql);
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo '<h2>Lista de Estudantes</h2>';
+echo '<table border="1">';
+echo '<tr><th>ID</th><th>Nome</th><th>Data de Nascimento</th></tr>';
+
+foreach ($students as $student) {
+    echo "<tr>";
+    echo "<td>" . htmlspecialchars($student['id']) . "</td>";
+    echo "<td>" . htmlspecialchars($student['name']) . "</td>";
+    echo "<td>" . htmlspecialchars($student['birth_date']) . "</td>";
+    echo "</tr>";
+}
+
+echo '</table>';
