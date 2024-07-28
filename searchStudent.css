@@ -4,6 +4,8 @@
     --gray:#e5e5e5;
     --orange:#fe9651;
     --black:#000;
+    --table-color:#ddd;
+    --table-color-gray:#f9f9f9;
 
     --font-times:'Times new Roman';
 
@@ -68,4 +70,32 @@ input:focus{
     transition: .8s;
     cursor: pointer;
     
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin:auto;
+}
+
+table, th, td {
+    border: 1px solid var(--table-color);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color:  var(--table-color-gray);
+}
+
+tr:nth-child(even) {
+    background-color:  var(--table-color-gray);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom:5px;
 }
