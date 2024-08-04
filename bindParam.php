@@ -19,16 +19,20 @@ $statement->bindValue(':colour', $fruit->getColour());
 $statement->execute();
 
 $calories = 150;
-$colour = 'red';
+$colour = 'Red';
 
-$sql = 'SELECT name, colour, calories FROM fruit WHERE calories <:calories AND colour = :colour';
+$sql = 'SELECT name, colour, calories FROM fruit WHERE calories >:calories AND colour = :colour';
 $statement = $pdo ->prepare($sql);
 
-$statement->bindParam(':calories', $colories, PDO::PARAM_INT);
-$statement->bindParam(':colour', $colour, PDO::PARAM_STR);
+$statement->bindParam(':calories', $calories);
+$statement->bindParam(':colour', $colour);
 
 $statement->execute();
 
+$results = $statement->fetchAll(PDO::FETCH_ASSOC);
+foreach ($results as $row) {
+    echo 'Name: ' . $row['name'] . ', Colour: ' . $row['colour'] . ', Calories: ' . $row['calories'] . PHP_EOL;
+}
 
 
 
