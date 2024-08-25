@@ -16,4 +16,5 @@ var_dump($query->fetchAll(PDO::FETCH_ASSOC));
 echo "Students in the database:\n";
 foreach ($students as $student) {
     echo $student['name'] . "\n"; // Supondo que a tabela tenha uma coluna 'name'
+    echo "Id:" . $student['id']. "\n";
 }

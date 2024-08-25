@@ -7,7 +7,7 @@ use PDOException;
 
 class DatabaseConnection
 {
-    private static ?PDO $connection = null; // Inicializa como null para verificar mais tarde
+    private static ?PDO $connection = null; 
 
     // Construtor privado para evitar instanciação direta
     private function __construct()
@@ -31,7 +31,7 @@ class DatabaseConnection
     }
 
     public static function createTables():void{
-        self::$connection->exec('CREATE TABLE IF NOT EXISTS students (id PRIMARY KEY, name TEXT, birth_date TEXT)');
+        self::$connection->exec('CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, birth_date TEXT)');
 
     }
 }
