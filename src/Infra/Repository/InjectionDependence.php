@@ -1,16 +1,16 @@
 <?php
+
 namespace Carolinasanches24\PhpPdo\Infra\Repository;
 
 use Carolinasanches24\PhpPdo\Domain\Model\Student;
 use Carolinasanches24\PhpPdo\Domain\Repository\StudentRepo;
-use Carolinasanches24\PhpPdo\Infra\Persistence\ConnectionCreator;
+use PDO;
+class InjectionDependence implements StudentRepo{
+    private PDO $connection;
 
-class PdoStudentRepo implements StudentRepo{
-    private \PDO $connection;
-
-    public function __construct()
+    public function __construct(PDO $connection)
     {
-        $this->connection = ConnectionCreator::createConnection();
+        $this->connection = $connection;
 
     }
     public function getAllStudents():array{
@@ -51,7 +51,7 @@ class PdoStudentRepo implements StudentRepo{
 
     private function hydrateStudentList(\PDOStatement $stmt): array
     {
-        $studentDataList = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $studentDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
@@ -92,7 +92,7 @@ class PdoStudentRepo implements StudentRepo{
         $stmt = $this->connection->prepare($updateQuery);
         $stmt->bindValue(':name', $student->name());
         $stmt->bindValue(':birth_date', $student->birthDate()->format('Y-m-d'));
-        $stmt->bindValue(':id', $student->id(), \PDO::PARAM_INT); 
+        $stmt->bindValue(':id', $student->id(), PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -101,7 +101,7 @@ class PdoStudentRepo implements StudentRepo{
     {
         $sqlDeleteStudent = "DELETE FROM students WHERE id = ?;";
         $stmt = $this->connection->prepare($sqlDeleteStudent);
-        $stmt->bindValue(1, $student->id(), \PDO::PARAM_INT); 
+        $stmt->bindValue(1, $student->id(), PDO::PARAM_INT);
         return $stmt->execute();
     }
 }
