@@ -4,20 +4,19 @@ namespace Carolinasanches24\PhpPdo\Domain\Model;
 
 class Student
 {
-    private string $name;
-    private int $id;
-    private \DateTimeInterface $birthDate;
-
-    public function __construct( int $id , string $name, \DateTimeInterface $birthDate)
+    public function __construct(
+        private string $name,
+        private \DateTimeImmutable $birthDate,
+        private int|null $id)
     {
         $this->id = $id;
         $this->name = $name;
         $this->birthDate = $birthDate;
     }
 
-    public function id(): int
+    public function id(): int|null
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     public function name(): string
