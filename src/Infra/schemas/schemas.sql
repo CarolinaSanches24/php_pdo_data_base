@@ -11,3 +11,5 @@ CREATE TABLE IF NOT EXISTS telefones (
     student_id INTEGER NOT NULL, 
     FOREIGN KEY(student_id) REFERENCES students(id)
 );
+
+INSERT INTO telefones (area_code, number_phone, student_id) VALUES ('96','984245589',10);

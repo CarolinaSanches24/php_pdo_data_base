@@ -2,6 +2,7 @@
 
 namespace Carolinasanches24\PhpPdo\Infra\Repository;
 
+use Carolinasanches24\PhpPdo\Domain\Model\Phone;
 use Carolinasanches24\PhpPdo\Domain\Model\Student;
 use Carolinasanches24\PhpPdo\Domain\Repository\StudentRepo;
 use PDO;
@@ -33,9 +34,9 @@ class InjectionDependence implements StudentRepo{
         }
 
         return new Student(
-            $studentData['id'],
             $studentData['name'],
-            new \DateTimeImmutable($studentData['birth_date'])
+            new \DateTimeImmutable($studentData['birth_date']),
+            $studentData['id']
         );
     }
 
@@ -55,14 +56,37 @@ class InjectionDependence implements StudentRepo{
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
-            $studentList[] = new Student(
-                $studentData['id'],
+            $student = new Student(
                 $studentData['name'],
-                new \DateTimeImmutable($studentData['birth_date'])
+                new \DateTimeImmutable($studentData['birth_date']),
+                $studentData['id']
             );
+
+            $this->fillPhonesOf($student);
+            $studentList[] = $student;
+    }
+
+    return $studentList;
+    }
+
+   private function fillPhonesOf(Student $student):void{
+        $sqlQuery = "SELECT id, area_code, number_phone FROM telefones WHERE student_id = ?";
+        $stmt = $this->connection->prepare($sqlQuery);
+        $stmt->bindValue(1, $student->id(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $phoneDataList = $stmt->fetchAll();
+
+        foreach($phoneDataList as $phoneData){
+            $phone = new Phone(
+                $phoneData['id'],
+                $phoneData['area_code'],
+                $phoneData['number_phone']
+            );
+
+            $student->addPhone($phone);
         }
 
-        return $studentList;
     }
 
     public function save(Student $student): bool

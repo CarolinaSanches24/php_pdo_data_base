@@ -1,19 +1,16 @@
 <?php
-use Carolinasanches24\PhpPdo\Domain\Model\DatabaseConnection;
+use Carolinasanches24\PhpPdo\Infra\Persistence\ConnectionCreator;
+use Carolinasanches24\PhpPdo\Infra\Persistence\DbSchemaManager;
+use Carolinasanches24\PhpPdo\Infra\Repository\InjectionDependence;
 
 require_once 'vendor/autoload.php';
 
-// Obter a conexão com o banco de dados
-$pdo = DatabaseConnection::getConnection();
-DatabaseConnection::createTables();
-// Executar uma consulta SELECT
-$query = $pdo->query('SELECT * FROM students');
-$students = $query->fetchAll(PDO::FETCH_ASSOC);
+$connection = ConnectionCreator::createConnection();
 
-var_dump($query->fetchAll(PDO::FETCH_ASSOC));
-// Exibir os resultados
-echo "Students in the database:\n";
-foreach ($students as $student) {
-    echo $student['name'] . "\n"; // Supondo que a tabela tenha uma coluna 'name'
-    echo "Id:" . $student['id']. "\n";
-}
+$schemaManager = new DbSchemaManager($connection);
+$schemaManager->createTables(__DIR__ . '/src/Infra/schemas/schemas.sql');
+
+$studentRepository = new InjectionDependence($connection);
+$studentList = $studentRepository->getAllStudents();
+
+var_dump($studentList);
