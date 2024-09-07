@@ -56,37 +56,42 @@ class InjectionDependence implements StudentRepo{
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
-            $student = new Student(
+            $studentList[] = new Student(
                 $studentData['name'],
                 new \DateTimeImmutable($studentData['birth_date']),
                 $studentData['id']
             );
 
-            $this->fillPhonesOf($student);
-            $studentList[] = $student;
-    }
-
+        }
     return $studentList;
     }
 
-   private function fillPhonesOf(Student $student):void{
-        $sqlQuery = "SELECT id, area_code, number_phone FROM telefones WHERE student_id = ?";
-        $stmt = $this->connection->prepare($sqlQuery);
-        $stmt->bindValue(1, $student->id(), PDO::PARAM_INT);
-        $stmt->execute();
+    public function getStudentsWithPhones():array{
+        $sqlQuery = 'SELECT students.id,
+                            students.name,
+                            students.birth_date,
+                            telefones.id as phone_id,
+                            telefones.area_code,
+                            telefones.number_phone
+                    FROM students
+                    JOIN telefones ON students.id = telefones.student_id;';
+        $stmt= $this->connection->query($sqlQuery);
+        $result = $stmt->fetchAll();
+        $studentList = [];
 
-        $phoneDataList = $stmt->fetchAll();
+        foreach($result as $row){
+            if(!array_key_exists($row['id'],$studentList)){
+                $studentList[$row['id']] = new Student(
+                    $row['name'],
+                    new \DateTimeImmutable($row['birth_date']),
+                    $row['id']
+                );
+            }
 
-        foreach($phoneDataList as $phoneData){
-            $phone = new Phone(
-                $phoneData['id'],
-                $phoneData['area_code'],
-                $phoneData['number_phone']
-            );
-
-            $student->addPhone($phone);
+            $phone = new Phone($row['phone_id'], $row['area_code'], $row['number_phone']);
+            $studentList[$row['id']]->addPhone($phone);
         }
-
+        return $studentList;
     }
 
     public function save(Student $student): bool
