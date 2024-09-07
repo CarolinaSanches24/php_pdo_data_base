@@ -26,3 +26,12 @@ try {
     echo "Failed: " . $e->getMessage();
 }
 ```
+
+###  o PDO nos fornece uma API muito simples para gerenciar transações
+Como iniciar e finalizar uma transação, com **beginTransaction e commit**
+Que é possível "cancelar" uma transação, com o método **rollBack**
+
+
+### Rename db sqlite
+
+ mv db.sqlite db.sqlite2

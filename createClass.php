@@ -13,18 +13,27 @@ $connection->exec('CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY A
 
 $connection->beginTransaction();
 
-$studentOne = new Student(
-    id: null,
-    birthDate: new DateTimeImmutable(),
-    name: 'Mauricio victor'
-);
+try{
+    $studentOne = new Student(
+        id: null,
+        birthDate: new DateTimeImmutable(),
+        name: 'Mauricio victor'
+    );
+    
+    $studentTwo = new Student(
+        id:null,
+        birthDate: new DateTimeImmutable(),
+        name: 'Carolinas Sanches'
+    );
+    
+    $studentRepository->save($studentTwo);
+    
+    $connection->commit();
+}catch(\RuntimeException $e){
+    echo $e->getMessage();
+    $connection->rollBack();
+}
 
-$studentTwo = new Student(
-    id:null,
-    birthDate: new DateTimeImmutable(),
-    name: 'Carolinas Sanches'
-);
 
-$studentRepository->save($studentTwo);
 
-$connection->commit();
+
