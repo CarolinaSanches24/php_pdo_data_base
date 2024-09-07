@@ -26,7 +26,7 @@ class InjectionDependence implements StudentRepo{
         $stmt = $this->connection->prepare($sqlStudentById);
         $stmt->execute([$id]);
 
-        $studentData = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $studentData = $stmt->fetch();
 
         if ($studentData === false) {
             return null;
@@ -51,7 +51,7 @@ class InjectionDependence implements StudentRepo{
 
     private function hydrateStudentList(\PDOStatement $stmt): array
     {
-        $studentDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $studentDataList = $stmt->fetchAll();
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
