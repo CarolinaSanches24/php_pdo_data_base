@@ -1,5 +1,4 @@
 <?php
-
 use Carolinasanches24\PhpPdo\Domain\Model\DatabaseConnection;
 
 require_once 'vendor/autoload.php';

@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Carolinasanches24\PhpPdo\Domain\Model\Student;
 use Carolinasanches24\PhpPdo\Infra\Persistence\ConnectionCreator;
 use Carolinasanches24\PhpPdo\Infra\Repository\InjectionDependence;
@@ -19,6 +19,12 @@ $studentOne = new Student(
     name: 'Mauricio victor'
 );
 
-$studentRepository->save($studentOne);
+$studentTwo = new Student(
+    id:null,
+    birthDate: new DateTimeImmutable(),
+    name: 'Carolinas Sanches'
+);
+
+$studentRepository->save($studentTwo);
 
 $connection->commit();
